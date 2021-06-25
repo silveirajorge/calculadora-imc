@@ -1,6 +1,6 @@
 function setConfig() {
   let texts = {
-    "title": "IMC"
+    "title": "IMC 1.0.0"
   };
   document.title = texts.title;
 }
