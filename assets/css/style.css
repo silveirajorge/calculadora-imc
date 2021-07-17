@@ -23,7 +23,7 @@ body {
   margin: 50px auto;
   background: #fff;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0.25rem;
 }
 
 form input,
@@ -35,6 +35,8 @@ form button {
 }
 
 form input {
+  border: 1px solid;
+  border-radius: 0.25rem;
   font-size: 24px;
   height: 50px;
   padding: 0 20px;
@@ -47,6 +49,7 @@ form input:focus {
 form button {
   border: none;
   background: var(--primary-color);
+  border-radius: 0.25rem;
   color: #fff;
   font-size: 18px;
   font-weight: 700;
@@ -65,11 +68,20 @@ form button:hover {
   grid-template-columns: 1fr 1fr;
 }
 
-.resultado {
-  display: none;
-  height: 50px;
-  justify-content: center;
-  padding: 10px;
+.paragrafo-resultado {
   text-align: center;
-  background-color: #da0000;
+  background-color: #198754;
+  border-color: #198754;
+  border-radius: 0.25rem;
+  padding: 10px 20px;
+  color: #fff;
+}
+
+.bad {
+  text-align: center;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  border-radius: 0.25rem;
+  padding: 10px 20px;
+  color: #fff;
 }

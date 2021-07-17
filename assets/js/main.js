@@ -1,62 +1,71 @@
-function meuEscopo() {
-  const form = document.querySelector("#formulario");
-  const result = document.querySelector("#resultado");
-  const peso = document.querySelector("#peso");
-  const altura = document.querySelector("#altura");
+const form = document.querySelector("#formulario");
 
-  function escutaEventoForm(evento) {
-    evento.preventDefault();
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    if (peso.value === "" && altura.value === "") {
-      result.style.cssText =
-        "display: block;" + "background-color: red;" + "color: white;";
-      result.textContent = `Informe seu peso e sua altura.`;
-    } else if (peso.value === "") {
-      result.style.cssText =
-        "display: block;" + "background-color: red;" + "color: white;";
-      result.textContent = `Informe seu peso.`;
-    } else if (altura.value === "") {
-      result.style.cssText =
-        "display: block;" + "background-color: red;" + "color: white;";
-      result.textContent = `Informe sua altura.`;
-    } else {
-      const imc = (peso.value / (altura.value * altura.value)).toFixed(2);
-      let classificacao;
-      if (imc < 18.5) {
-        classificacao = `Abaixo do peso`;
-        result.style.cssText =
-          "display: block;" + "background-color: #ff5100;" + "color: white;";
-        result.textContent = classificacao;
-      } else if (imc < 25) {
-        classificacao = `Peso normal`;
-        result.style.cssText =
-          "display: block;" + "background-color: #009b1a;" + "color: white;";
-        result.textContent = classificacao;
-      } else if (imc < 30) {
-        classificacao = `Sobrepeso`;
-        result.style.cssText =
-          "display: block;" + "background-color: blue;" + "color: white";
-        result.textContent = classificacao;
-      } else if (imc < 35) {
-        classificacao = `Obesidade grau I`;
-        result.style.cssText =
-          "display: block;" + "background-color: #da0000;" + "color: white";
-        result.textContent = classificacao;
-      } else if (imc < 40) {
-        classificacao = `Obesidade grau II`;
-        result.style.cssText =
-          "display: block;" + "background-color: #b80000;" + "color: white";
-        result.textContent = classificacao;
-      } else if (imc >= 40) {
-        classificacao = `Obesidade grau III`;
-        result.style.cssText =
-          "display: block;" + "background-color: #9b0000;" + "color: white";
-        result.textContent = classificacao;
-      }
-    }
+  const inputPeso = e.target.querySelector("#peso");
+  const inputAltura = e.target.querySelector("#altura");
+
+  const peso = Number(inputPeso.value);
+  const altura = Number(inputAltura.value);
+
+  if (!peso) {
+    setResultado("Peso inválido", false);
+    return;
   }
 
-  form.addEventListener("submit", escutaEventoForm);
+  if (!altura) {
+    setResultado("Altura inválida", false);
+    return;
+  }
+
+  const imc = getIMC(peso, altura);
+  const nivelIMC = getNivelImc(imc);
+
+  const msg = `Seu IMC é ${imc} (${nivelIMC})`;
+  setResultado(msg, true);
+});
+
+function criaP() {
+  const p = document.createElement("p");
+  return p;
 }
 
-meuEscopo();
+function setResultado(msg, isValid) {
+  const resultado = document.querySelector("#resultado");
+  resultado.innerHTML = "";
+
+  const p = criaP();
+
+  if (isValid) {
+    p.classList.add("paragrafo-resultado");
+  } else {
+    p.classList.add("bad");
+  }
+
+  p.innerHTML = msg;
+  resultado.appendChild(p);
+}
+
+function getIMC(peso, altura) {
+  const imc = peso / altura ** 2;
+  return imc.toFixed(2);
+}
+
+function getNivelImc(imc) {
+  const nivel = [
+    "Abaixo do peso",
+    "Peso normal",
+    "Sobrepeso",
+    "Obesidade grau I",
+    "Obesidade grau II",
+    "Obesidade grau III",
+  ];
+
+  if (imc > 39.9) return nivel[5];
+  if (imc >= 34.9) return nivel[4];
+  if (imc >= 29.9) return nivel[3];
+  if (imc >= 24.9) return nivel[2];
+  if (imc >= 18.5) return nivel[1];
+  if (imc < 18.5) return nivel[0];
+}
